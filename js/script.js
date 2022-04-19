@@ -6,7 +6,6 @@ const loadPhoneData = () => {
     const searchInput = document.getElementById("search-phone");
     const searchKeyword = searchInput.value.toLowerCase();
     document.getElementById("search-keyword").innerText = searchKeyword;
-    document.getElementById("phones-container").innerHTML = "";
     elementShowHide(true, "result-header");
     elementShowHide(false, "single-container");
     getData(searchKeyword);
@@ -32,16 +31,31 @@ const searchMessageChange = (status, message) => {
     searchMessage.innerText = message;
 };
 
+// Function for Create an Element and append html code
+const createElement = (className) => {
+    const element = document.createElement("div");
+    element.classList.add(className);
+    return element;
+};
+
+// Clear Container Data when generate new Data
+const clearContainer = (id) => {
+    const container = document.getElementById(id);
+    container.innerHTML = "";
+    return container;
+};
+
 const getSearchResult = (phones, status) => {
     if (!status) {
+        clearContainer("phones-container");
         searchMessageChange(status, "We're sorry, we found no results");
     } else {
-        const phonesContainer = document.getElementById("phones-container");
+        const phonesContainer = clearContainer("phones-container");
+
         const slice20Phones = phones.slice(0, 20);
         slice20Phones.forEach(({ brand, image, phone_name, slug }) => {
             searchMessageChange(status, `Your search returned ${phones.length} results. Only the most popular ${slice20Phones.length} devices shown.`);
-            const card = document.createElement("div");
-            card.classList.add("col");
+            const card = createElement("col");
             card.innerHTML = `
             <div class="card border-0">
                 <div class="card-head">
@@ -73,18 +87,21 @@ const loadSingleData = (slug) => {
 };
 
 const getPhoneDetails = (data) => {
-    const singleContainer = document.getElementById("single-container");
-    const featuresDetails = document.createElement("div");
-    featuresDetails.classList.add("container-fluid");
-    console.log(featuresDetails);
+    const { slug, name, releaseDate, brand, image, others, mainFeatures } = data;
+    const { storage, displaySize, chipSet, memory, sensors } = mainFeatures;
+    // Clear Container Data when generate new Data
+    const singleContainer = clearContainer("single-container");
+
+    // Create Element and append html code
+    const featuresDetails = createElement("container-fluid");
     featuresDetails.innerHTML = `
         <div class="single-phone-head border row my-3 p-3">
-            <h3 class="phone-title m-0 mb-2 fw-bolder text-dark">Samsung Galaxy Note 30</h3>
-            <h5 class="m-0">Brand: <span class="text-color me-4">Samsung </span> Status: <span>Rumored</span></h5>
+            <h3 class="phone-title m-0 mb-2 fw-bolder text-dark">${brand} ${name}</h3>
+            <h5 class="m-0">Brand: <span class="text-color me-4">${brand} </span> Category: <span>${slug.includes("watch") ? "Watch" : slug.includes("tab") ? "Tablet" : "Phone"} </span> </h5>
         </div>
         <div class="row">
             <div class="col-md-5 border text-center">
-                <img id="phone-image" class="w-75 py-5" src="https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-13-pro-max.jpg" alt="" />
+                <img id="phone-image" class="w-75 py-5" src="${image}" alt="${slug}" />
             </div>
             <div class="phone-features col-md-7 ps-5">
                 <div class="row">
@@ -97,25 +114,7 @@ const getPhoneDetails = (data) => {
                         </div>
                         <div class="feature-text">
                             <h5 class="text-muted mb-2">Released</h5>
-                            <h5>Not Announced</h5>
-                        </div>
-                    </div>
-                    <div class="col d-flex mb-5">
-                        <div class="feature-icon me-3">
-                            <i class="fa-solid fa-hard-drive"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5 class="text-muted mb-2">Storage</h5>
-                            <h5>128GB/256GB/1TB storage, no card slot</h5>
-                        </div>
-                    </div>
-                    <div class="col d-flex mb-5">
-                        <div class="feature-icon me-3">
-                            <i class="fa-solid fa-mobile-screen"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5 class="text-muted mb-2">Display</h5>
-                            <h5>6.7 inches, 109.8 cm2 (~87.4% screen-to-body ratio)</h5>
+                            <h5>${releaseDate ? releaseDate : "<span class='text-danger'>Not Announced</span>"}</h5>
                         </div>
                     </div>
                     <div class="col d-flex mb-5">
@@ -124,7 +123,25 @@ const getPhoneDetails = (data) => {
                         </div>
                         <div class="feature-text">
                             <h5 class="text-muted mb-2">Storage</h5>
-                            <h5>128GB 6GB RAM, 256GB 6GB RAM, 512GB 6GB RAM, 1TB 6GB RAM</h5>
+                            <h5>${storage}</h5>
+                        </div>
+                    </div>
+                    <div class="col d-flex mb-5">
+                        <div class="feature-icon me-3">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h5 class="text-muted mb-2">Display</h5>
+                            <h5>${displaySize}</h5>
+                        </div>
+                    </div>
+                    <div class="col d-flex mb-5">
+                        <div class="feature-icon me-3">
+                             <i class="fa-solid fa-hard-drive"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h5 class="text-muted mb-2">Memory</h5>
+                            <h5>${memory}</h5>
                         </div>
                     </div>
                     <div class="col d-flex mb-5">
@@ -133,7 +150,7 @@ const getPhoneDetails = (data) => {
                         </div>
                         <div class="feature-text">
                             <h5 class="text-muted mb-2">ChipSet</h5>
-                            <h5>Apple A15 Bionic (5 nm)</h5>
+                            <h5>${chipSet ? chipSet : "<span class='text-danger'>ChipSet Info Not Available</span>"}</h5>
                         </div>
                     </div>
                     <div class="col d-flex mb-5">
@@ -142,7 +159,8 @@ const getPhoneDetails = (data) => {
                         </div>
                         <div class="feature-text">
                             <h5 class="text-muted mb-2">Sensors</h5>
-                            <h5>"Face ID", "accelerometer", "gyro", "proximity", "compass", "barometer"</h5>
+                            <h5>${sensors.map((sensor) => " " + sensor)}</h5>
+                            
                         </div>
                     </div>
                 </div>
@@ -153,3 +171,4 @@ const getPhoneDetails = (data) => {
 };
 
 const setInnerValue = (id) => {};
+// `<li> ${sensor} </li>`
