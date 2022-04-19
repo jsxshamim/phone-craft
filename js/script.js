@@ -97,14 +97,17 @@ const loadSingleData = (slug) => {
 };
 
 const getPhoneDetails = (data) => {
-    const { slug, name, releaseDate, brand, image, others, mainFeatures } = data;
+    const { slug, name, releaseDate, brand, image, mainFeatures } = data;
     const { storage, displaySize, chipSet, memory, sensors } = mainFeatures;
-    const { WLAN, Bluetooth, GPS, NFC, Radio, USB } = others;
+
+    const others = data?.others ? Object.entries(data?.others) : [["Error", "Others Feature Not Found"]];
+
     // Clear Container Data when generate new Data
     const singleContainer = clearContainer("single-container");
 
     // Create Element and append html code
     const featuresDetails = createElement("container-fluid");
+
     featuresDetails.innerHTML = `
         <div class="single-phone-head border row my-3 p-3">
             <h3 class="phone-title m-0 mb-2 fw-bolder text-dark">${brand} ${name}</h3>
@@ -179,32 +182,15 @@ const getPhoneDetails = (data) => {
         <div class="others-feature border row my-3 p-3">
             <table >
                 <tbody>
-                    <tr>
-                        <th scope="row">WLAN :</th>
-                        <td>${WLAN === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : WLAN}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Bluetooth :</th>
-                        <td>${Bluetooth === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : Bluetooth}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">GPS :</th>
-                        <td>${GPS === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : GPS}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">NFC :</th>
-                        <td>${NFC === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : NFC === "Yes" ? `<i class="text-success fa-solid fa-circle-check"></i>` : NFC}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Radio :</th>
-                        <td>${Radio === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : Radio}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">USB :</th>
-                        <td>${USB === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : USB}</td>
-                    </tr>
+                    ${others.map(([featureName, feature]) => {
+                        return `<tr>
+                                    <th>${featureName} :</th>
+                                    <td>${feature === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : feature === "Yes" ? `<i class="text-success fa-solid fa-circle-check"></i>` : feature}</td>
+                                </tr>`;
+                    })}
                 </tbody>
             </table>
         </div>`;
+
     singleContainer.appendChild(featuresDetails);
 };
