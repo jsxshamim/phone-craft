@@ -114,8 +114,8 @@ const getPhoneDetails = (data) => {
                             <i class="fa-solid fa-calendar-check"></i>
                         </div>
                         <div class="feature-text">
-                            <h5 class="text-muted mb-2">Released</h5>
-                            <h5>${releaseDate ? releaseDate : "<span class='text-danger'>Not Announced</span>"}</h5>
+                            <h5 class="text-muted mb-2">Release Date</h5>
+                            <h5>${releaseDate ? releaseDate : "<span class='text-danger'>Release Date Not Announced</span>"}</h5>
                         </div>
                     </div>
                     <div class="col d-flex mb-5">
@@ -151,7 +151,7 @@ const getPhoneDetails = (data) => {
                         </div>
                         <div class="feature-text">
                             <h5 class="text-muted mb-2">ChipSet</h5>
-                            <h5>${chipSet ? chipSet : "<span class='text-danger'>ChipSet Info Not Available</span>"}</h5>
+                            <h5>${chipSet ? chipSet : "<span class='text-danger'>Unspecified</span>"}</h5>
                         </div>
                     </div>
                     <div class="col d-flex mb-5">
@@ -183,7 +183,7 @@ const getPhoneDetails = (data) => {
                     </tr>
                     <tr>
                         <th scope="row">NFC :</th>
-                        <td>${NFC === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : NFC}</td>
+                        <td>${NFC === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : NFC === "Yes" ? `<i class="text-success fa-solid fa-circle-check"></i>` : NFC}</td>
                     </tr>
                     <tr>
                         <th scope="row">Radio :</th>
@@ -195,9 +195,6 @@ const getPhoneDetails = (data) => {
                     </tr>
                 </tbody>
             </table>
-
-
         </div>`;
-
     singleContainer.appendChild(featuresDetails);
 };
