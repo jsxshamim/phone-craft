@@ -38,3 +38,14 @@
 .text-color {
     color: #b50404;
 }
+.others-feature table {
+    font-size: 18px;
+    line-height: 2rem;
+}
+#phones-container .col .card {
+    /* box-shadow: 1px 4px 18px 0px rgb(0 0 0 / 10%); */
+    transition: 0.5s;
+}
+#phones-container .col:hover .card {
+    box-shadow: 1px 4px 18px 0px rgb(0 0 0 / 30%);
+}

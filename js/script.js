@@ -57,7 +57,7 @@ const getSearchResult = (phones, status) => {
             searchMessageChange(status, `Your search returned ${phones.length} results. Only the most popular ${slice20Phones.length} devices shown.`);
             const card = createElement("col");
             card.innerHTML = `
-            <div class="card border-0">
+            <div class="card py-3 border-0">
                 <div class="card-head">
                     <img src="${image}" class="w-75" alt="${slug}" />
                 </div>
@@ -74,9 +74,9 @@ const getSearchResult = (phones, status) => {
 };
 
 const handleSingleData = (slug) => {
-    elementShowHide(false, "result-header");
     elementShowHide(true, "single-container");
     loadSingleData(slug);
+    document.getElementById("single-container").scrollIntoView();
 };
 
 const loadSingleData = (slug) => {
@@ -89,6 +89,7 @@ const loadSingleData = (slug) => {
 const getPhoneDetails = (data) => {
     const { slug, name, releaseDate, brand, image, others, mainFeatures } = data;
     const { storage, displaySize, chipSet, memory, sensors } = mainFeatures;
+    const { WLAN, Bluetooth, GPS, NFC, Radio, USB } = others;
     // Clear Container Data when generate new Data
     const singleContainer = clearContainer("single-container");
 
@@ -100,8 +101,8 @@ const getPhoneDetails = (data) => {
             <h5 class="m-0">Brand: <span class="text-color me-4">${brand} </span> Category: <span>${slug.includes("watch") ? "Watch" : slug.includes("tab") ? "Tablet" : "Phone"} </span> </h5>
         </div>
         <div class="row">
-            <div class="col-md-5 border text-center">
-                <img id="phone-image" class="w-75 py-5" src="${image}" alt="${slug}" />
+            <div class="col-md-5 border d-flex align-items-center justify-content-center">
+                <img id="phone-image" class="w-50" src="${image}" alt="${slug}" />
             </div>
             <div class="phone-features col-md-7 ps-5">
                 <div class="row">
@@ -140,7 +141,7 @@ const getPhoneDetails = (data) => {
                              <i class="fa-solid fa-hard-drive"></i>
                         </div>
                         <div class="feature-text">
-                            <h5 class="text-muted mb-2">Memory</h5>
+                            <h5 class="text-muted mb-2">RAM</h5>
                             <h5>${memory}</h5>
                         </div>
                     </div>
@@ -159,16 +160,44 @@ const getPhoneDetails = (data) => {
                         </div>
                         <div class="feature-text">
                             <h5 class="text-muted mb-2">Sensors</h5>
-                            <h5>${sensors.map((sensor) => " " + sensor)}</h5>
-                            
+                            <p>${sensors.map((sensor) => " " + sensor)}</p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="others-feature border row my-3 p-3">
+            <table >
+                <tbody>
+                    <tr>
+                        <th scope="row">WLAN :</th>
+                        <td>${WLAN === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : WLAN}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Bluetooth :</th>
+                        <td>${Bluetooth === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : Bluetooth}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">GPS :</th>
+                        <td>${GPS === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : GPS}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">NFC :</th>
+                        <td>${NFC === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : NFC}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Radio :</th>
+                        <td>${Radio === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : Radio}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">USB :</th>
+                        <td>${USB === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : USB}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
         </div>`;
 
     singleContainer.appendChild(featuresDetails);
 };
-
-const setInnerValue = (id) => {};
-// `<li> ${sensor} </li>`
