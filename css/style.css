@@ -3,8 +3,9 @@
     height: 250px;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: bottom 10px;
+    background-position: right;
 }
+
 .result-header {
     display: none;
 }
@@ -17,11 +18,12 @@
     margin: auto;
     text-align: center;
 }
-
+.card-image {
+    width: 75%;
+}
 #show-more-btn {
     display: none;
 }
-
 .phone-features h5 {
     margin: 0;
 }
@@ -42,9 +44,22 @@
     font-size: 18px;
     line-height: 2rem;
 }
+.others-feature table th {
+    width: 160px;
+}
 #phones-container .col .card {
     transition: 0.5s;
 }
 #phones-container .col:hover .card {
     box-shadow: 1px 4px 18px 0px rgb(0 0 0 / 30%);
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+    .search-bg {
+        height: auto;
+    }
+    .card-image {
+        width: 100%;
+    }
 }

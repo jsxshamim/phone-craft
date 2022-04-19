@@ -2,27 +2,37 @@ const elementShowHide = (show, id) => {
     document.getElementById(id).style.display = show ? "block" : "none";
 };
 
-const loadPhoneData = () => {
-    const searchInput = document.getElementById("search-phone");
-    const searchKeyword = searchInput.value.toLowerCase();
+const getSearchInputValue = () => {
+    const searchInputLg = document.getElementById("search-phone-lg");
+    const searchInputMd = document.getElementById("search-phone-md");
+    const searchKeyword = searchInputLg.value ? searchInputLg.value.toLowerCase() : searchInputMd.value.toLowerCase();
+    return searchKeyword;
+};
+
+const searchHandler = () => {
+    const searchKeyword = getSearchInputValue();
     document.getElementById("search-keyword").innerText = searchKeyword;
     elementShowHide(true, "result-header");
     elementShowHide(false, "single-container");
-    getData(searchKeyword);
+    loadPhoneData(searchKeyword);
+    document.getElementById("search-phone-lg").value = "";
+    document.getElementById("search-phone-md").value = "";
 };
-const getPhoneData = () => {
+
+const loadPhoneData = (searchKeyword) => {
+    fetch(`https://openapi.programming-hero.com/api/phones?search=${searchKeyword}`)
+        .then((res) => res.json())
+        .then((data) => getSearchResult(data.data, data.status));
+};
+
+// Display Default Devices
+const getStaticData = () => {
     fetch(`https://openapi.programming-hero.com/api/phones?search=g`)
         .then((res) => res.json())
         .then((data) => getSearchResult(data.data, data.status));
 };
 
-getPhoneData();
-
-const getData = (searchKeyword) => {
-    fetch(`https://openapi.programming-hero.com/api/phones?search=${searchKeyword}`)
-        .then((res) => res.json())
-        .then((data) => getSearchResult(data.data, data.status));
-};
+getStaticData();
 
 const searchMessageChange = (status, message) => {
     const searchMessage = document.getElementById("search-message");
@@ -59,7 +69,7 @@ const getSearchResult = (phones, status) => {
             card.innerHTML = `
             <div class="card py-3 border-0">
                 <div class="card-head">
-                    <img src="${image}" class="w-75" alt="${slug}" />
+                    <img src="${image}" class="card-image" alt="${slug}" />
                 </div>
                 <div class="card-body text-center">
                     <h6 class="card-title">${brand} ${phone_name}</h6>
@@ -101,15 +111,15 @@ const getPhoneDetails = (data) => {
             <h5 class="m-0">Brand: <span class="text-color me-4">${brand} </span> Category: <span>${slug.includes("watch") ? "Watch" : slug.includes("tab") ? "Tablet" : "Phone"} </span> </h5>
         </div>
         <div class="row">
-            <div class="col-md-5 border d-flex align-items-center justify-content-center">
+            <div class="col-md-5 border d-flex align-items-center justify-content-center py-5 py-md-0">
                 <img id="phone-image" class="w-50" src="${image}" alt="${slug}" />
             </div>
-            <div class="phone-features col-md-7 ps-5">
+            <div class="phone-features col-md-7 mt-3 mt-md-0 ps-2 ps-md-5">
                 <div class="row">
                     <h4 class="text-color py-3 ps-4 border fw-bolder">Key Specifications :</h4>
                 </div>
-                <div class="row row-cols-md-2 mt-3 ps-3 py-3 border">
-                    <div class="col d-flex mb-5">
+                <div class="row row-cols-lg-2 row-cols-md-1 row-cols-sm-2 row-cols-1 mt-3 ps-3 py-3 border">
+                    <div class="col d-flex mb-3 md-lg-5">
                         <div class="feature-icon me-3">
                             <i class="fa-solid fa-calendar-check"></i>
                         </div>
@@ -118,7 +128,7 @@ const getPhoneDetails = (data) => {
                             <h5>${releaseDate ? releaseDate : "<span class='text-danger'>Release Date Not Announced</span>"}</h5>
                         </div>
                     </div>
-                    <div class="col d-flex mb-5">
+                    <div class="col d-flex mb-4 md-lg-5">
                         <div class="feature-icon me-3">
                             <i class="fa-solid fa-sd-card"></i>
                         </div>
@@ -127,7 +137,7 @@ const getPhoneDetails = (data) => {
                             <h5>${storage}</h5>
                         </div>
                     </div>
-                    <div class="col d-flex mb-5">
+                    <div class="col d-flex mb-4 md-lg-5">
                         <div class="feature-icon me-3">
                             <i class="fa-solid fa-mobile-screen"></i>
                         </div>
@@ -136,7 +146,7 @@ const getPhoneDetails = (data) => {
                             <h5>${displaySize}</h5>
                         </div>
                     </div>
-                    <div class="col d-flex mb-5">
+                    <div class="col d-flex mb-4 md-lg-5">
                         <div class="feature-icon me-3">
                              <i class="fa-solid fa-hard-drive"></i>
                         </div>
@@ -145,7 +155,7 @@ const getPhoneDetails = (data) => {
                             <h5>${memory}</h5>
                         </div>
                     </div>
-                    <div class="col d-flex mb-5">
+                    <div class="col d-flex mb-4 md-lg-5">
                         <div class="feature-icon me-3">
                             <i class="fa-solid fa-microchip"></i>
                         </div>
@@ -154,7 +164,7 @@ const getPhoneDetails = (data) => {
                             <h5>${chipSet ? chipSet : "<span class='text-danger'>Unspecified</span>"}</h5>
                         </div>
                     </div>
-                    <div class="col d-flex mb-5">
+                    <div class="col d-flex mb-4 md-lg-5">
                         <div class="feature-icon me-3">
                             <i class="fa-brands fa-nfc-symbol"></i>
                         </div>
