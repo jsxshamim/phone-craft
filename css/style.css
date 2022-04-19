@@ -1,0 +1,40 @@
+.search-bg {
+    background-image: url(/images/wqa_857x260.jpg);
+    height: 250px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom 10px;
+}
+.result-header {
+    display: none;
+}
+.border-s {
+    border-left: 10px solid;
+    background-color: #f2f2f2;
+}
+.card-head {
+    padding: 10px;
+    margin: auto;
+    text-align: center;
+}
+
+#show-more-btn {
+    display: none;
+}
+
+.phone-features h5 {
+    margin: 0;
+}
+.feature-icon {
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+}
+.feature-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.text-color {
+    color: #b50404;
+}

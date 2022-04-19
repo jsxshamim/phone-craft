@@ -13,7 +13,56 @@
         <script src="https://kit.fontawesome.com/87f80bdbf6.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <h1>Phone Craft</h1>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <a class="navbar-brand" href="#">
+                        <img src="/images/logo.png" alt="" width="180" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="d-flex mx-auto w-50">
+                            <input id="search-phone" class="form-control me-2" type="search" placeholder="Find Your Phone, Watch, Tab" aria-label="Search" />
+                            <button onclick="loadPhoneData()" id="search-btn" class="btn btn-outline-success" type="submit">Search</button>
+                        </div>
+                        <ul class="navbar-nav mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Review</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="fa-solid fa-circle-user"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section id="result-header" class="container mt-5 result-header">
+                <header class="search-bg d-flex align-items-end">
+                    <h2 class="bg-light p-3 m-3 pe-4 bg-opacity-50 border border-success">Search results for "<span id="search-keyword"></span>"</h2>
+                </header>
+                <div>
+                    <h5 class="border-s p-3 py-4 border-success" id="search-message"></h5>
+                </div>
+            </section>
+
+            <section id="single-container" class="container"></section>
+
+            <section class="container">
+                <div id="phones-container" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-5 mt-1"></div>
+                <button type="button" id="show-more-btn" class="btn btn-danger mt-3 m-auto">Show More Result</button>
+            </section>
+        </main>
 
         <!-- JavaScript -->
         <script src="js/script.js"></script>
