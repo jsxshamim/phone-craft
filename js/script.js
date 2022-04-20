@@ -96,12 +96,36 @@ const loadSingleData = (slug) => {
         .then((data) => getPhoneDetails(data.data));
 };
 
+const keySpecifications = (id, featureName, icon) => {
+    return `
+        <div class="col d-flex mb-4 md-lg-5">
+            <div class="feature-icon me-3">
+                <i class="fa-solid fa-${icon}"></i>
+            </div>
+            <div class="feature-text">
+                <h5 class="text-muted mb-2">${featureName}</h5>
+                <h5>${id}</h5>
+            </div>
+        </div>`;
+};
+
 const getPhoneDetails = (data) => {
     const { slug, name, releaseDate, brand, image, mainFeatures } = data;
     const { storage, displaySize, chipSet, memory, sensors } = mainFeatures;
 
     const others = data?.others ? Object.entries(data?.others) : [["Error", "Others Feature Not Found"]];
 
+    const displaySensors = sensors.map((sensor) => " " + sensor);
+
+    // Others Feature
+    const otherFeatures = others.map(([featureName, feature]) => {
+        return `
+            <tr>
+                <th>${featureName} :</th>
+                <td>${feature === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : feature === "Yes" ? `<i class="text-success fa-solid fa-circle-check"></i>` : feature}</td>
+            </tr>`;
+    });
+    console.log(otherFeatures);
     // Clear Container Data when generate new Data
     const singleContainer = clearContainer("single-container");
 
@@ -122,72 +146,19 @@ const getPhoneDetails = (data) => {
                     <h4 class="text-color py-3 ps-4 border fw-bolder">Key Specifications :</h4>
                 </div>
                 <div class="row row-cols-lg-2 row-cols-md-1 row-cols-sm-2 row-cols-1 mt-3 ps-3 py-3 border">
-                    <div class="col d-flex mb-3 md-lg-5">
-                        <div class="feature-icon me-3">
-                            <i class="fa-solid fa-calendar-check"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5 class="text-muted mb-2">Release Date</h5>
-                            <h5>${releaseDate ? releaseDate : "<span class='text-danger'>Release Date Not Announced</span>"}</h5>
-                        </div>
-                    </div>
-                    <div class="col d-flex mb-4 md-lg-5">
-                        <div class="feature-icon me-3">
-                            <i class="fa-solid fa-sd-card"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5 class="text-muted mb-2">Storage</h5>
-                            <h5>${storage}</h5>
-                        </div>
-                    </div>
-                    <div class="col d-flex mb-4 md-lg-5">
-                        <div class="feature-icon me-3">
-                            <i class="fa-solid fa-mobile-screen"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5 class="text-muted mb-2">Display</h5>
-                            <h5>${displaySize}</h5>
-                        </div>
-                    </div>
-                    <div class="col d-flex mb-4 md-lg-5">
-                        <div class="feature-icon me-3">
-                             <i class="fa-solid fa-hard-drive"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5 class="text-muted mb-2">RAM</h5>
-                            <h5>${memory}</h5>
-                        </div>
-                    </div>
-                    <div class="col d-flex mb-4 md-lg-5">
-                        <div class="feature-icon me-3">
-                            <i class="fa-solid fa-microchip"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5 class="text-muted mb-2">ChipSet</h5>
-                            <h5>${chipSet ? chipSet : "<span class='text-danger'>Unspecified</span>"}</h5>
-                        </div>
-                    </div>
-                    <div class="col d-flex mb-4 md-lg-5">
-                        <div class="feature-icon me-3">
-                            <i class="fa-brands fa-nfc-symbol"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h5 class="text-muted mb-2">Sensors</h5>
-                            <p>${sensors.map((sensor) => " " + sensor)}</p>
-                        </div>
-                    </div>
+                    ${keySpecifications(releaseDate ? releaseDate : "<span class='text-danger'>Release Date Not Announced</span>", "Release Date", "calendar-check")}
+                    ${keySpecifications(storage, "Storage", "sd-card")}
+                    ${keySpecifications(displaySize, "Display", "mobile-screen")}
+                    ${keySpecifications(memory, "Memory", "memory")}
+                    ${keySpecifications(chipSet ? chipSet : "<span class='text-danger'>Unspecified</span>", "ChipSet", "microchip")}
+                    ${keySpecifications(displaySensors, "Sensors", "wind")}
                 </div>
             </div>
         </div>
         <div class="others-feature border row my-3 p-3">
             <table >
                 <tbody>
-                    ${others.map(([featureName, feature]) => {
-                        return `<tr>
-                                    <th>${featureName} :</th>
-                                    <td>${feature === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : feature === "Yes" ? `<i class="text-success fa-solid fa-circle-check"></i>` : feature}</td>
-                                </tr>`;
-                    })}
+                    ${otherFeatures}
                 </tbody>
             </table>
         </div>`;
