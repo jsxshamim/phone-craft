@@ -6,23 +6,33 @@ const getSearchInputValue = () => {
     const searchInputLg = document.getElementById("search-phone-lg");
     const searchInputMd = document.getElementById("search-phone-md");
     const searchKeyword = searchInputLg.value ? searchInputLg.value.toLowerCase() : searchInputMd.value.toLowerCase();
-    return searchKeyword;
+    if (!searchKeyword) {
+        searchInputLg.style.border = "1px solid red";
+    } else {
+        searchInputLg.style.border = "1px solid #ced4da";
+        return searchKeyword;
+    }
 };
 
 const searchHandler = () => {
     const searchKeyword = getSearchInputValue();
-    document.getElementById("search-keyword").innerText = searchKeyword;
-    elementShowHide(true, "result-header");
-    elementShowHide(false, "single-container");
-    loadPhoneData(searchKeyword);
-    document.getElementById("search-phone-lg").value = "";
-    document.getElementById("search-phone-md").value = "";
+    if (!searchKeyword) {
+        showToast("error-message", true);
+    } else {
+        document.getElementById("search-keyword").innerText = searchKeyword;
+        elementShowHide(true, "result-header");
+        elementShowHide(false, "single-container");
+        loadPhoneData(searchKeyword);
+        document.getElementById("search-phone-lg").value = "";
+        document.getElementById("search-phone-md").value = "";
+    }
 };
 
 const loadPhoneData = (searchKeyword) => {
     fetch(`https://openapi.programming-hero.com/api/phones?search=${searchKeyword}`)
         .then((res) => res.json())
-        .then((data) => getSearchResult(data.data, data.status));
+        .then((data) => getSearchResult(data.data, data.status))
+        .catch((err) => console.log(err.message));
 };
 
 // Display Default Devices
@@ -55,16 +65,24 @@ const clearContainer = (id) => {
     return container;
 };
 
-const getSearchResult = (phones, status) => {
+const showMoreHandler = () => {
+    const searchKeyword = getSearchInputValue();
+    console.log(searchKeyword);
+    fetch(`https://openapi.programming-hero.com/api/phones?search=${searchKeyword}`)
+        .then((res) => res.json())
+        .then((data) => getSearchResult(data.data, data.status, true));
+};
+
+const getSearchResult = (phones, status, isShowAll) => {
     if (!status) {
         clearContainer("phones-container");
         searchMessageChange(status, "We're sorry, we found no results");
     } else {
         const phonesContainer = clearContainer("phones-container");
 
-        const slice20Phones = phones.slice(0, 20);
-        slice20Phones.forEach(({ brand, image, phone_name, slug }) => {
-            searchMessageChange(status, `Your search returned ${phones.length} results. Only the most popular ${slice20Phones.length} devices shown.`);
+        const displayItems = phones.slice(0, !isShowAll ? 20 : 100);
+        displayItems.forEach(({ brand, image, phone_name, slug }) => {
+            searchMessageChange(status, `Your search returned ${phones.length} results. Only the most popular ${displayItems.length} devices shown.`);
             const card = createElement("col");
             card.innerHTML = `
             <div class="card py-3 border-0">
@@ -115,7 +133,7 @@ const getPhoneDetails = (data) => {
 
     const others = data?.others ? Object.entries(data?.others) : [["Error", "Others Feature Not Found"]];
 
-    const displaySensors = sensors.map((sensor) => " " + sensor);
+    const displaySensors = sensors.map((sensor) => sensor);
 
     // Others Feature
     const otherFeatures = others.map(([featureName, feature]) => {
@@ -125,7 +143,7 @@ const getPhoneDetails = (data) => {
                 <td>${feature === "No" ? `<i class="text-danger fa-solid fa-circle-xmark"></i>` : feature === "Yes" ? `<i class="text-success fa-solid fa-circle-check"></i>` : feature}</td>
             </tr>`;
     });
-    console.log(otherFeatures);
+
     // Clear Container Data when generate new Data
     const singleContainer = clearContainer("single-container");
 
@@ -151,17 +169,24 @@ const getPhoneDetails = (data) => {
                     ${keySpecifications(displaySize, "Display", "mobile-screen")}
                     ${keySpecifications(memory, "Memory", "memory")}
                     ${keySpecifications(chipSet ? chipSet : "<span class='text-danger'>Unspecified</span>", "ChipSet", "microchip")}
-                    ${keySpecifications(displaySensors, "Sensors", "wind")}
+                    ${keySpecifications(displaySensors.join(", "), "Sensors", "tower-broadcast")}
                 </div>
             </div>
         </div>
         <div class="others-feature border row my-3 p-3">
             <table >
                 <tbody>
-                    ${otherFeatures}
+                    ${otherFeatures.join("")}
                 </tbody>
             </table>
         </div>`;
 
     singleContainer.appendChild(featuresDetails);
+};
+
+// Toast Showing
+const showToast = (id, isShowing) => {
+    let errorMessage = document.getElementById(id);
+    let errToast = new bootstrap.Toast(errorMessage);
+    isShowing ? errToast.show() : errToast.hide();
 };

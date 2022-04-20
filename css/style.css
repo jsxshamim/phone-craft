@@ -1,3 +1,20 @@
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active {
+    outline: 0px !important;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+}
+
 .search-bg {
     background-image: url(/images/wqa_857x260.jpg);
     height: 250px;
@@ -5,9 +22,24 @@
     background-size: cover;
     background-position: right;
 }
-
 .result-header {
     display: none;
+}
+.search-input {
+    position: relative;
+}
+#invalid-tooltip {
+    position: absolute;
+    top: 100%;
+    z-index: 5;
+    display: block;
+    max-width: 100%;
+    padding: 0.25rem 0.5rem;
+    margin-top: 0.1rem;
+    font-size: 0.875rem;
+    color: #fff;
+    background-color: rgba(220, 53, 69, 0.9);
+    border-radius: 0.25rem;
 }
 .border-s {
     border-left: 10px solid;
@@ -26,6 +58,7 @@
 }
 .phone-features h5 {
     margin: 0;
+    line-height: 1.8rem;
 }
 .feature-icon {
     font-size: 40px;
