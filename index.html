@@ -84,11 +84,11 @@
         </main>
 
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-            <div id="error-message" class="toast align-items-center text-white bg-danger" role="alert" data-bs-autohide="true" aria-live="assertive" aria-atomic="true">
+            <div id="error-handle" class="toast align-items-center text-white bg-danger" role="alert" data-bs-autohide="true" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body d-flex col-gap align-items-center">
                         <i class="fa-solid fa-circle-exclamation me-2 fs-5"></i>
-                        <span class="fs-5">Please Fill out Search Field</span>
+                        <span id="error-message" class="fs-5"></span>
                     </div>
                     <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
