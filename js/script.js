@@ -5,8 +5,10 @@ const getSearchInputValue = () => {
     const searchKeyword = searchInputLg.value ? searchInputLg.value.toLowerCase() : searchInputMd.value.toLowerCase();
     if (!searchKeyword) {
         searchInputLg.style.border = "1px solid red";
+        searchInputMd.style.border = "1px solid red";
     } else {
         searchInputLg.style.border = "1px solid #ced4da";
+        searchInputMd.style.border = "1px solid #ced4da";
         return searchKeyword;
     }
 };
@@ -183,7 +185,7 @@ const getPhoneDetails = (data) => {
     featuresDetails.innerHTML = `
         <div class="single-phone-head border row my-3 p-3">
             <h3 class="phone-title m-0 mb-2 fw-bolder text-dark">${brand} ${name}</h3>
-            <h5 class="m-0">Brand: <span class="text-color me-4">${brand} </span> Category: <span>${slug.includes("watch") ? "Watch" : slug.includes("tab") ? "Tablet" : "Phone"} </span> </h5>
+            <h5 class="m-0 fs-6">Brand: <span class="text-danger me-4">${brand} </span> Category: <span class="text-danger">${slug.includes("watch") ? "Watch" : slug.includes("tab") ? "Tablet" : "Phone"} </span> </h5>
         </div>
         <div class="row">
             <div class="col-md-5 border d-flex align-items-center justify-content-center py-5 py-md-0">

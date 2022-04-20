@@ -95,4 +95,8 @@ label:focus,
     .card-image {
         width: 100%;
     }
+    .search-bg h2 {
+        font-size: 18px;
+        --bs-bg-opacity: 0.75;
+    }
 }
